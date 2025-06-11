@@ -1,22 +1,36 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ImagineAI - AI Image Generation</title>
     <link rel="stylesheet" href="styles.css">
 </head>
+
 <body>
     <nav class="navbar">
         <div class="nav-container">
             <div class="nav-logo">
                 <h2>ImagineAI</h2>
             </div>
-            <div class="nav-links">
+
+            <!-- Desktop Navigation -->
+            <div class="nav-links" id="navLinks">
                 <a href="#features">Features</a>
                 <a href="#about">About</a>
-                <a href="/login" class="btn-secondary">Login</a>
-                <a href="/signup" class="btn-primary">Sign Up</a>
+                <button id="themeToggle" class="theme-toggle" title="Toggle theme">
+                    <span id="themeIcon">🌙</span>
+                </button>
+                <a style="width: 100px; color: white;" href="/login" class="btn-primary">Login</a>
+                <a style="width: 100px; color: white;" href="/signup" class="btn-primary">✨ Sign Up</a>
+            </div>
+
+            <!-- Mobile Menu Toggle -->
+            <div class="mobile-menu-toggle" id="mobileMenuToggle">
+                <span></span>
+                <span></span>
+                <span></span>
             </div>
         </div>
     </nav>
@@ -25,9 +39,10 @@
         <section class="hero">
             <div class="hero-content">
                 <h1>Transform Your Ideas Into Stunning Images</h1>
-                <p>Harness the power of AI to generate beautiful, unique images from simple text prompts. Create art, illustrations, and visuals like never before.</p>
+                <p>Harness the power of AI to generate beautiful, unique images from simple text prompts. Create art,
+                    illustrations, and visuals like never before.</p>
                 <div class="hero-buttons">
-                    <a href="/signup" class="btn-primary btn-large">Get Started Free</a>
+                    <a href="/signup" class="btn-primary btn-large">🚀 Get Started Free</a>
                     <a href="#features" class="btn-secondary btn-large">Learn More</a>
                 </div>
             </div>
@@ -72,8 +87,11 @@
                 <div class="about-content">
                     <div class="about-text">
                         <h2>About ImagineAI</h2>
-                        <p>ImagineAI is a cutting-edge platform that democratizes creative expression through artificial intelligence. Our mission is to empower everyone to create stunning visual content, regardless of their artistic background.</p>
-                        <p>Using Google's advanced Gemini AI model, we transform your text descriptions into beautiful, unique images that capture your imagination perfectly.</p>
+                        <p>ImagineAI is a cutting-edge platform that democratizes creative expression through artificial
+                            intelligence. Our mission is to empower everyone to create stunning visual content,
+                            regardless of their artistic background.</p>
+                        <p>Using Google's advanced Gemini AI model, we transform your text descriptions into beautiful,
+                            unique images that capture your imagination perfectly.</p>
                         <ul class="about-features">
                             <li>✨ State-of-the-art AI technology</li>
                             <li>🔒 Secure user authentication</li>
@@ -125,5 +143,74 @@
             </div>
         </div>
     </footer>
+
+    <script>
+        // Theme toggle functionality
+        const themeToggle = document.getElementById('themeToggle');
+        const themeIcon = document.getElementById('themeIcon');
+        const html = document.documentElement;
+
+        // Check for saved theme preference or default to dark mode
+        const currentTheme = localStorage.getItem('theme') || 'dark';
+        html.setAttribute('data-theme', currentTheme);
+        updateThemeIcon(currentTheme);
+
+        themeToggle.addEventListener('click', () => {
+            const currentTheme = html.getAttribute('data-theme');
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+
+            html.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+            updateThemeIcon(newTheme);
+        });
+
+        function updateThemeIcon(theme) {
+            themeIcon.textContent = theme === 'dark' ? '☀️' : '🌙';
+        }
+
+        // Mobile menu functionality
+        const mobileMenuToggle = document.getElementById('mobileMenuToggle');
+        const navLinks = document.getElementById('navLinks');
+
+        mobileMenuToggle.addEventListener('click', () => {
+            mobileMenuToggle.classList.toggle('active');
+            navLinks.classList.toggle('mobile-open');
+
+            // Prevent body scroll when menu is open
+            if (navLinks.classList.contains('mobile-open')) {
+                document.body.style.overflow = 'hidden';
+            } else {
+                document.body.style.overflow = '';
+            }
+        });
+
+        // Close mobile menu when clicking on links
+        navLinks.addEventListener('click', (e) => {
+            if (e.target.tagName === 'A') {
+                mobileMenuToggle.classList.remove('active');
+                navLinks.classList.remove('mobile-open');
+                document.body.style.overflow = '';
+            }
+        });
+
+        // Close mobile menu when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!navLinks.contains(e.target) && !mobileMenuToggle.contains(e.target)) {
+                mobileMenuToggle.classList.remove('active');
+                navLinks.classList.remove('mobile-open');
+                document.body.style.overflow = '';
+            }
+        });
+
+        // Handle window resize
+        window.addEventListener('resize', () => {
+            if (window.innerWidth > 768) {
+                mobileMenuToggle.classList.remove('active');
+                navLinks.classList.remove('mobile-open');
+                document.body.style.overflow = '';
+            }
+        });
+    </script>
 </body>
+
 </html>

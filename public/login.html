@@ -10,7 +10,12 @@
     <div class="auth-container">
         <div class="auth-card">
             <div class="auth-header">
-                <h1>ImagineAI</h1>
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
+                    <h1>ImagineAI</h1>
+                    <button id="themeToggle" class="theme-toggle" title="Toggle theme">
+                        <span id="themeIcon">🌙</span>
+                    </button>
+                </div>
                 <h2>Welcome Back</h2>
                 <p>Sign in to continue creating amazing images</p>
             </div>
@@ -27,7 +32,7 @@
                 </div>
                 
                 <button type="submit" class="btn-primary btn-full" id="loginBtn">
-                    Sign In
+                    🚀 Sign In
                 </button>
             </form>
             
@@ -42,6 +47,29 @@
 
     <script src="auth.js"></script>
     <script>
+        // Theme toggle functionality
+        const themeToggle = document.getElementById('themeToggle');
+        const themeIcon = document.getElementById('themeIcon');
+        const html = document.documentElement;
+
+        // Check for saved theme preference or default to dark mode
+        const currentTheme = localStorage.getItem('theme') || 'dark';
+        html.setAttribute('data-theme', currentTheme);
+        updateThemeIcon(currentTheme);
+
+        themeToggle.addEventListener('click', () => {
+            const currentTheme = html.getAttribute('data-theme');
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            
+            html.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+            updateThemeIcon(newTheme);
+        });
+
+        function updateThemeIcon(theme) {
+            themeIcon.textContent = theme === 'dark' ? '☀️' : '🌙';
+        }
+
         document.getElementById('loginForm').addEventListener('submit', async (e) => {
             e.preventDefault();
             
@@ -78,7 +106,7 @@
                 showMessage('Network error. Please try again.', 'error');
             }
             
-            loginBtn.textContent = 'Sign In';
+            loginBtn.textContent = '🚀 Sign In';
             loginBtn.disabled = false;
         });
     </script>
