@@ -1707,18 +1707,23 @@ img {
     flex-direction: column;
     height: auto;
     gap: 20px;
+    max-width: none;
   }
 
   .left-panel {
     order: 1;
     padding: 24px;
     gap: 24px;
+    height: auto;
+    min-height: auto;
   }
 
   .right-panel {
     order: 2;
     padding: 24px;
     max-height: 400px;
+    height: auto;
+    min-height: auto;
   }
 
   .prompt-section h3,
@@ -1734,23 +1739,87 @@ img {
     /* Prevents zoom on iOS */
   }
 
+  .generated-image-section {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    min-height: 0;
+  }
+
   .image-container {
     min-height: 300px;
-    max-height: 400px;
+    max-height: none;
+    height: auto;
+    width: 100%;
+    border: 2px dashed var(--border-color);
+    border-radius: var(--radius-lg);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    overflow: hidden;
+    transition: all var(--transition-normal);
+    background: var(--bg-elevated);
+  }
+
+  .image-container.has-image {
+    border: 1px solid var(--border-color);
+    background: var(--bg-card);
+    min-height: auto;
+    height: auto;
+    padding: 16px;
+  }
+
+  .image-container img {
+    max-width: 100%;
+    max-height: 90vh;
+    width: auto;
+    height: auto;
+    border-radius: var(--radius-md);
+    object-fit: contain;
+    transition: transform var(--transition-normal);
+    display: block;
+  }
+
+  .image-container img:hover {
+    transform: scale(1.02);
+  }
+
+  .image-container .image-placeholder {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 40px 20px;
+    width: 100%;
+    height: 100%;
   }
 
   .image-container .image-placeholder p {
     font-size: 1rem;
     margin: 16px;
+    color: var(--text-muted);
   }
 
   .placeholder-icon {
     font-size: 3rem;
+    color: var(--text-muted);
+    margin-bottom: 16px;
   }
 
   .image-actions {
     flex-wrap: wrap;
     gap: 12px;
+    justify-content: center;
+    width: 100%;
+  }
+
+  .image-actions button {
+    flex: 1;
+    min-width: 120px;
+    max-width: 200px;
   }
 
   .history-container {
@@ -1818,169 +1887,83 @@ img {
   }
 }
 
+/* Mobile Image Display Fixes */
+@media (max-width: 768px) {
+  .generated-image-section {
+    min-height: 350px;
+    flex-shrink: 0;
+  }
+
+  .image-container {
+    position: relative;
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    background: var(--bg-elevated) !important;
+    border: 2px dashed var(--border-color) !important;
+  }
+
+  .image-container.has-image {
+    background: var(--bg-card) !important;
+    border: 1px solid var(--border-color) !important;
+    align-items: flex-start !important;
+    padding: 16px !important;
+  }
+
+  .image-container img {
+    max-width: calc(100% - 32px) !important;
+    max-height: calc(80vh - 100px) !important;
+    width: auto !important;
+    height: auto !important;
+    object-fit: contain !important;
+    display: block !important;
+    margin: 0 auto !important;
+  }
+
+  /* Ensure image is visible and properly sized */
+  .image-container:not(.has-image) .image-placeholder {
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: center !important;
+    align-items: center !important;
+    width: 100% !important;
+    height: 100% !important;
+    min-height: 250px !important;
+  }
+}
+
 @media (max-width: 480px) {
-
-  /* Extra Mobile Optimizations */
-  .container {
-    padding: 0 16px;
+  .image-container {
+    min-height: 200px !important;
   }
 
-  .nav-container {
-    padding: 0 16px;
-    height: 60px;
+  .image-container img {
+    max-width: calc(100% - 24px) !important;
+    max-height: calc(70vh - 80px) !important;
   }
 
-  .navbar {
-    height: 60px;
+  .image-container:not(.has-image) .image-placeholder {
+    min-height: 200px !important;
+    padding: 20px 16px !important;
   }
+}
 
-  .nav-logo h2 {
-    font-size: 1.4rem;
-  }
+/* iOS Safari specific fixes for image display */
+@supports (-webkit-touch-callout: none) {
+  @media (max-width: 768px) {
+    .image-container {
+      -webkit-overflow-scrolling: touch;
+    }
 
-  .nav-links.mobile-open {
-    top: 60px;
-    padding: 20px 16px;
+    .image-container img {
+      max-height: calc(100vh - 200px) !important;
+      -webkit-transform: translateZ(0);
+      transform: translateZ(0);
+    }
   }
+}
 
-  .theme-toggle {
-    width: 44px;
-    height: 44px;
-    font-size: 18px;
-  }
-
-  /* Enhanced Buttons for Mobile */
-  .btn-primary,
-  .btn-secondary {
-    padding: 14px 24px;
-    font-size: 15px;
-    min-height: 48px;
-    border-radius: var(--radius-md);
-  }
-
-  .btn-large {
-    padding: 16px 32px;
-    font-size: 16px;
-    min-height: 52px;
-  }
-
-  /* Enhanced Hero Section */
-  .hero {
-    margin-top: 60px;
-    padding: 40px 16px;
-    gap: 32px;
-  }
-
-  .hero-content h1 {
-    font-size: clamp(1.8rem, 10vw, 2.5rem);
-    margin-bottom: 16px;
-    line-height: 1.2;
-  }
-
-  .hero-content p {
-    font-size: 1rem;
-    margin-bottom: 24px;
-    line-height: 1.5;
-  }
-
-  .hero-buttons {
-    gap: 12px;
-  }
-
-  .image-placeholder {
-    width: 240px;
-    height: 240px;
-  }
-
-  .ai-icon {
-    font-size: 3rem;
-  }
-
-  /* Enhanced Features */
-  .features,
-  .about {
-    padding: 40px 16px;
-  }
-
-  .features h2,
-  .about-text h2 {
-    font-size: clamp(1.6rem, 8vw, 2rem);
-    margin-bottom: 32px;
-  }
-
-  .feature-card {
-    padding: 24px 20px;
-  }
-
-  .feature-icon {
-    font-size: 2.2rem;
-    margin-bottom: 16px;
-  }
-
-  .feature-card h3 {
-    font-size: 1.2rem;
-    margin-bottom: 10px;
-  }
-
-  .feature-card p {
-    font-size: 0.95rem;
-  }
-
-  /* Enhanced About Section */
-  .about-text p {
-    font-size: 0.95rem;
-    margin-bottom: 16px;
-  }
-
-  .about-features li {
-    font-size: 0.95rem;
-    padding: 10px 0;
-  }
-
-  .about-stats {
-    flex-direction: column;
-    gap: 12px;
-  }
-
-  .stat {
-    padding: 20px 16px;
-  }
-
-  .stat h3 {
-    font-size: 1.8rem;
-  }
-
-  .stat p {
-    font-size: 0.85rem;
-  }
-
-  /* Enhanced Footer */
-  .footer {
-    padding: 32px 16px 20px;
-  }
-
-  .footer-logo h3 {
-    font-size: 1.5rem;
-  }
-
-  .footer-logo p {
-    font-size: 0.95rem;
-  }
-
-  .footer-section h4 {
-    font-size: 1rem;
-    margin-bottom: 16px;
-  }
-
-  .footer-section a {
-    font-size: 0.9rem;
-    margin-bottom: 12px;
-  }
-
-  .footer-bottom {
-    font-size: 0.85rem;
-    margin-top: 24px;
-  }
+@media (max-width: 480px) {
 
   /* Enhanced App Interface */
   .app-header {
@@ -2027,12 +2010,32 @@ img {
 
   .image-container {
     min-height: 250px;
-    max-height: 350px;
+    max-height: none;
+    height: auto;
+    padding: 12px;
+  }
+
+  .image-container.has-image {
+    padding: 12px;
+    min-height: auto;
+  }
+
+  .image-container img {
+    max-width: 100%;
+    max-height: 80vh;
+    width: auto;
+    height: auto;
+    object-fit: contain;
+    border-radius: var(--radius-sm);
   }
 
   .placeholder-icon {
     font-size: 2.5rem;
     margin-bottom: 12px;
+  }
+
+  .image-container .image-placeholder {
+    padding: 30px 16px;
   }
 
   .image-container .image-placeholder p {
@@ -2097,8 +2100,7 @@ img {
   }
 
   .auth-header h2 {
-    font-size: 1.2rem;
-    margin-bottom: 8px;
+    font-size: 1.1rem;
   }
 
   .auth-header p {
