@@ -2,6 +2,12 @@ let currentImageData = null;
 let currentImageId = null;
 let historyCache = [];
 let isHistoryLoading = false;
+let currentPage = 0;
+const ITEMS_PER_PAGE = 12;
+let hasMoreItems = true;
+
+// Image cache for faster loading
+const imageCache = new Map();
 
 // Check authentication
 function checkAuth() {
@@ -37,6 +43,9 @@ function setupEventListeners() {
     .getElementById("downloadBtn")
     .addEventListener("click", downloadImage);
   document.getElementById("logoutBtn").addEventListener("click", logout);
+  document
+    .getElementById("loadMoreBtn")
+    .addEventListener("click", loadMoreHistory);
 
   // Enter key in prompt input
   document.getElementById("promptInput").addEventListener("keydown", (e) => {
@@ -84,11 +93,15 @@ async function generateImage() {
       const newHistoryItem = {
         id: data.imageId,
         prompt: prompt,
-        image_data: data.imageData,
         created_at: new Date().toISOString(),
       };
       historyCache.unshift(newHistoryItem);
-      displayHistory(historyCache);
+
+      // Cache the new image
+      imageCache.set(data.imageId, data.imageData);
+
+      // Refresh history display
+      displayHistory(historyCache.slice(0, (currentPage + 1) * ITEMS_PER_PAGE));
 
       // Show note if using fallback method
       if (data.note) {
@@ -144,7 +157,7 @@ function downloadImage() {
   document.body.removeChild(link);
 }
 
-// Load history asynchronously with optimization
+// Load history metadata only (fast)
 async function loadHistoryAsync() {
   if (isHistoryLoading) return;
 
@@ -157,16 +170,30 @@ async function loadHistoryAsync() {
     '<div class="history-loading"><div class="mini-spinner"></div><p>Loading your creations...</p></div>';
 
   try {
-    const response = await fetch("/api/history", {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
+    const response = await fetch(
+      `/api/history-metadata?page=${currentPage}&limit=${ITEMS_PER_PAGE}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
 
     if (response.ok) {
-      const history = await response.json();
-      historyCache = history;
-      displayHistory(history);
+      const data = await response.json();
+
+      if (currentPage === 0) {
+        historyCache = data.items;
+      } else {
+        historyCache = [...historyCache, ...data.items];
+      }
+
+      hasMoreItems = data.hasMore;
+      displayHistory(historyCache);
+
+      // Show/hide load more button
+      const loadMoreBtn = document.getElementById("loadMoreBtn");
+      loadMoreBtn.style.display = hasMoreItems ? "block" : "none";
     } else {
       throw new Error("Failed to load history");
     }
@@ -179,7 +206,42 @@ async function loadHistoryAsync() {
   isHistoryLoading = false;
 }
 
-// Display history with lazy loading optimization
+// Load more history items
+async function loadMoreHistory() {
+  currentPage++;
+  await loadHistoryAsync();
+}
+
+// Load individual image when needed
+async function loadImage(imageId) {
+  // Check cache first
+  if (imageCache.has(imageId)) {
+    return imageCache.get(imageId);
+  }
+
+  const token = checkAuth();
+
+  try {
+    const response = await fetch(`/api/image/${imageId}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    if (response.ok) {
+      const data = await response.json();
+      // Cache the image
+      imageCache.set(imageId, data.imageData);
+      return data.imageData;
+    }
+  } catch (error) {
+    console.error("Error loading image:", error);
+  }
+
+  return null;
+}
+
+// Display history with optimized lazy loading
 function displayHistory(history) {
   const historyContainer = document.getElementById("historyContainer");
 
@@ -195,51 +257,84 @@ function displayHistory(history) {
   history.forEach((item, index) => {
     const historyItem = document.createElement("div");
     historyItem.className = "history-item";
-    historyItem.onclick = () => displayImage(item.image_data, item.prompt);
 
-    // Lazy load images after the first few
-    if (index < 10) {
-      historyItem.innerHTML = `
-        <img src="${item.image_data}" alt="${item.prompt}" loading="lazy" />
-        <div class="history-item-prompt">${item.prompt}</div>
-        <div class="history-item-date">${new Date(
-          item.created_at
-        ).toLocaleDateString()}</div>
-      `;
-    } else {
-      historyItem.innerHTML = `
-        <div class="image-placeholder-small" data-src="${item.image_data}">
-          <div class="placeholder-icon-small">🖼️</div>
-        </div>
-        <div class="history-item-prompt">${item.prompt}</div>
-        <div class="history-item-date">${new Date(
-          item.created_at
-        ).toLocaleDateString()}</div>
-      `;
+    // Create placeholder initially
+    historyItem.innerHTML = `
+      <div class="image-placeholder-small" data-image-id="${item.id}">
+        <div class="placeholder-icon-small">🖼️</div>
+        <div class="loading-spinner-small" style="display: none;"></div>
+      </div>
+      <div class="history-item-prompt">${item.prompt}</div>
+      <div class="history-item-date">${new Date(
+        item.created_at
+      ).toLocaleDateString()}</div>
+    `;
 
-      // Lazy load when scrolled into view
-      const observer = new IntersectionObserver((entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            const placeholder = entry.target.querySelector(
-              ".image-placeholder-small"
-            );
-            if (placeholder) {
-              const src = placeholder.dataset.src;
-              placeholder.outerHTML = `<img src="${src}" alt="${item.prompt}" loading="lazy" />`;
-              observer.unobserve(entry.target);
-            }
-          }
-        });
-      });
-      observer.observe(historyItem);
-    }
+    // Add click handler
+    historyItem.onclick = async () => {
+      const imageData = await loadImage(item.id);
+      if (imageData) {
+        displayImage(imageData, item.prompt);
+      }
+    };
 
     fragment.appendChild(historyItem);
   });
 
   historyContainer.innerHTML = "";
   historyContainer.appendChild(fragment);
+
+  // Set up intersection observer for lazy loading
+  setupLazyLoading();
+}
+
+// Setup intersection observer for lazy loading images
+function setupLazyLoading() {
+  const imageObserver = new IntersectionObserver(
+    async (entries) => {
+      for (const entry of entries) {
+        if (entry.isIntersecting) {
+          const placeholder = entry.target;
+          const imageId = placeholder.dataset.imageId;
+
+          if (imageId && !placeholder.classList.contains("loaded")) {
+            // Show loading spinner
+            const spinner = placeholder.querySelector(".loading-spinner-small");
+            const icon = placeholder.querySelector(".placeholder-icon-small");
+
+            spinner.style.display = "block";
+            icon.style.display = "none";
+
+            // Load the image
+            const imageData = await loadImage(imageId);
+
+            if (imageData) {
+              // Replace placeholder with actual image
+              placeholder.outerHTML = `<img src="${imageData}" alt="Generated image" loading="lazy" />`;
+            } else {
+              // Show error state
+              spinner.style.display = "none";
+              icon.style.display = "block";
+              icon.textContent = "❌";
+            }
+
+            placeholder.classList.add("loaded");
+            imageObserver.unobserve(entry.target);
+          }
+        }
+      }
+    },
+    {
+      rootMargin: "50px", // Start loading 50px before the image comes into view
+    }
+  );
+
+  // Observe all image placeholders
+  document
+    .querySelectorAll(".image-placeholder-small")
+    .forEach((placeholder) => {
+      imageObserver.observe(placeholder);
+    });
 }
 
 // Logout
