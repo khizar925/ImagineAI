@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ImagineAI - Create</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="app-container">
+        <header class="app-header">
+            <div class="header-left">
+                <h1>ImagineAI</h1>
+                <span id="userWelcome"></span>
+            </div>
+            <div class="header-right">
+                <button id="logoutBtn" class="btn-secondary">Logout</button>
+            </div>
+        </header>
+
+        <main class="app-main">
+            <div class="app-content">
+                <div class="left-panel">
+                    <div class="prompt-section">
+                        <h3>Create Your Image</h3>
+                        <div class="prompt-input-group">
+                            <textarea 
+                                id="promptInput" 
+                                placeholder="Describe the image you want to generate... (e.g., 'A serene mountain landscape at sunset with a lake reflection')"
+                                rows="4"
+                            ></textarea>
+                            <button id="generateBtn" class="btn-primary">
+                                Generate Image
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="generated-image-section">
+                        <div id="imageContainer" class="image-container">
+                            <div class="image-placeholder">
+                                <div class="placeholder-icon">🎨</div>
+                                <p>Your generated image will appear here</p>
+                            </div>
+                        </div>
+                        
+                        <div id="imageActions" class="image-actions" style="display: none;">
+                            <button id="downloadBtn" class="btn-primary">Download</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="right-panel">
+                    <div class="history-section">
+                        <h3>Your Creations</h3>
+                        <div id="historyContainer" class="history-container">
+                            <div class="history-placeholder">
+                                <p>Your image history will appear here</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <div id="loadingOverlay" class="loading-overlay" style="display: none;">
+        <div class="loading-content">
+            <div class="spinner"></div>
+            <p>Generating your image...</p>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
