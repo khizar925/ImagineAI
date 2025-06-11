@@ -1740,6 +1740,93 @@ img {
   }
 
   .generated-image-section {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 16px !important;
+    min-height: 300px !important;
+    margin-bottom: 20px !important;
+  }
+
+  .generated-image-section h3 {
+    font-size: 1.2rem !important;
+    margin-bottom: 12px !important;
+    color: var(--text-primary) !important;
+    font-weight: 600 !important;
+  }
+
+  .image-container {
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    min-height: 250px !important;
+    width: 100% !important;
+    border: 2px dashed var(--border-color) !important;
+    border-radius: var(--radius-lg) !important;
+    background: var(--bg-elevated) !important;
+    position: relative !important;
+    overflow: hidden !important;
+  }
+
+  .image-container.has-image {
+    border: 1px solid var(--border-color) !important;
+    background: var(--bg-card) !important;
+    padding: 12px !important;
+    align-items: flex-start !important;
+  }
+
+  .image-container img {
+    max-width: 100% !important;
+    max-height: 400px !important;
+    width: auto !important;
+    height: auto !important;
+    object-fit: contain !important;
+    border-radius: var(--radius-md) !important;
+    display: block !important;
+  }
+
+  .image-placeholder {
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: center !important;
+    align-items: center !important;
+    text-align: center !important;
+    width: 100% !important;
+    height: 100% !important;
+    padding: 40px 20px !important;
+  }
+
+  .placeholder-icon {
+    font-size: 3rem !important;
+    color: var(--text-muted) !important;
+    margin-bottom: 16px !important;
+  }
+
+  .image-placeholder p {
+    color: var(--text-muted) !important;
+    font-size: 1rem !important;
+    margin: 0 !important;
+  }
+
+  .image-actions {
+    display: flex !important;
+    gap: 12px !important;
+    justify-content: center !important;
+    width: 100% !important;
+  }
+
+  .image-actions button {
+    flex: 1 !important;
+    max-width: 200px !important;
+  }
+
+  #promptInput {
+    min-height: 100px;
+    padding: 16px;
+    font-size: 16px;
+    /* Prevents zoom on iOS */
+  }
+
+  .generated-image-section {
     flex: 1;
     display: flex;
     flex-direction: column;
@@ -1776,7 +1863,6 @@ img {
     max-height: 90vh;
     width: auto;
     height: auto;
-    border-radius: var(--radius-md);
     object-fit: contain;
     transition: transform var(--transition-normal);
     display: block;
@@ -2062,7 +2148,7 @@ img {
 
   .history-item img,
   .image-placeholder-small {
-    height: 100px;
+    height: 80px;
   }
 
   .history-item-prompt {

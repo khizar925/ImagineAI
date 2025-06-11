@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ImagineAI - Create</title>
     <link rel="stylesheet" href="styles.css">
 </head>
+
 <body>
     <div class="app-container">
         <header class="app-header">
@@ -27,11 +29,9 @@
                     <div class="prompt-section">
                         <h3>Create Your Image</h3>
                         <div class="prompt-input-group">
-                            <textarea 
-                                id="promptInput" 
+                            <textarea id="promptInput"
                                 placeholder="Describe the image you want to generate... (e.g., 'A serene mountain landscape at sunset with a lake reflection')"
-                                rows="4"
-                            ></textarea>
+                                rows="4"></textarea>
                             <button id="generateBtn" class="btn-primary">
                                 ✨ Generate Image
                             </button>
@@ -39,13 +39,14 @@
                     </div>
 
                     <div class="generated-image-section">
+                        <h3>Generated Image</h3>
                         <div id="imageContainer" class="image-container">
                             <div class="image-placeholder">
                                 <div class="placeholder-icon">🎨</div>
-                                <p style="margin: 20px;">Your generated image will appear here</p>
+                                <p>Your generated image will appear here</p>
                             </div>
                         </div>
-                        
+
                         <div id="imageActions" class="image-actions" style="display: none;">
                             <button id="downloadBtn" class="btn-primary">📥 Download</button>
                         </div>
@@ -61,7 +62,8 @@
                             </div>
                         </div>
                         <!-- Add load more button for pagination -->
-                        <button id="loadMoreBtn" class="btn-secondary" style="display: none; width: 100%; margin-top: 10px;">
+                        <button id="loadMoreBtn" class="btn-secondary"
+                            style="display: none; width: 100%; margin-top: 10px;">
                             Load More
                         </button>
                     </div>
@@ -79,4 +81,5 @@
 
     <script src="app.js"></script>
 </body>
+
 </html>
