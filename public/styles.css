@@ -1925,7 +1925,7 @@ img {
   .history-item-prompt {
     font-size: 13px;
     margin-bottom: 6px;
-    -webkit-line-clamp: 2;
+    /* -webkit-line-clamp: 2; */
   }
 
   .history-item-date {
@@ -2034,458 +2034,162 @@ img {
   }
 }
 
-/* iOS Safari specific fixes for image display */
+/* iOS Safari Specific Image Display Fixes */
 @supports (-webkit-touch-callout: none) {
+  /* iPhone-specific image container fixes */
   @media (max-width: 768px) {
+    .generated-image-section {
+      display: -webkit-flex !important;
+      display: flex !important;
+      -webkit-flex-direction: column !important;
+      flex-direction: column !important;
+      gap: 16px !important;
+      min-height: 300px !important;
+      margin-bottom: 20px !important;
+      -webkit-transform: translateZ(0) !important;
+      transform: translateZ(0) !important;
+    }
+
     .image-container {
-      -webkit-overflow-scrolling: touch;
+      display: -webkit-flex !important;
+      display: flex !important;
+      -webkit-justify-content: center !important;
+      justify-content: center !important;
+      -webkit-align-items: center !important;
+      align-items: center !important;
+      min-height: 250px !important;
+      width: 100% !important;
+      border: 2px dashed var(--border-color) !important;
+      border-radius: var(--radius-lg) !important;
+      background: var(--bg-elevated) !important;
+      position: relative !important;
+      overflow: hidden !important;
+      -webkit-transform: translateZ(0) !important;
+      transform: translateZ(0) !important;
+      -webkit-backface-visibility: hidden !important;
+      backface-visibility: hidden !important;
+    }
+
+    .image-container.has-image {
+      border: 1px solid var(--border-color) !important;
+      background: var(--bg-card) !important;
+      padding: 12px !important;
+      -webkit-align-items: flex-start !important;
+      align-items: flex-start !important;
+      min-height: auto !important;
     }
 
     .image-container img {
-      max-height: calc(100vh - 200px) !important;
-      -webkit-transform: translateZ(0);
-      transform: translateZ(0);
+      max-width: 100% !important;
+      max-height: 400px !important;
+      width: auto !important;
+      height: auto !important;
+      -webkit-object-fit: contain !important;
+      object-fit: contain !important;
+      border-radius: var(--radius-md) !important;
+      display: block !important;
+      -webkit-transform: translateZ(0) !important;
+      transform: translateZ(0) !important;
+      -webkit-backface-visibility: hidden !important;
+      backface-visibility: hidden !important;
+      opacity: 1 !important;
+      visibility: visible !important;
+    }
+
+    .image-placeholder {
+      display: -webkit-flex !important;
+      display: flex !important;
+      -webkit-flex-direction: column !important;
+      flex-direction: column !important;
+      -webkit-justify-content: center !important;
+      justify-content: center !important;
+      -webkit-align-items: center !important;
+      align-items: center !important;
+      text-align: center !important;
+      width: 100% !important;
+      height: 100% !important;
+      padding: 40px 20px !important;
+      -webkit-transform: translateZ(0) !important;
+      transform: translateZ(0) !important;
+    }
+
+    .placeholder-icon {
+      font-size: 3rem !important;
+      color: var(--text-muted) !important;
+      margin-bottom: 16px !important;
+      display: block !important;
+      -webkit-transform: translateZ(0) !important;
+      transform: translateZ(0) !important;
+    }
+
+    .image-placeholder p {
+      color: var(--text-muted) !important;
+      font-size: 1rem !important;
+      margin: 0 !important;
+      display: block !important;
+      -webkit-transform: translateZ(0) !important;
+      transform: translateZ(0) !important;
+    }
+
+    .image-actions {
+      display: -webkit-flex !important;
+      display: flex !important;
+      gap: 12px !important;
+      -webkit-justify-content: center !important;
+      justify-content: center !important;
+      width: 100% !important;
+      -webkit-transform: translateZ(0) !important;
+      transform: translateZ(0) !important;
+    }
+
+    .image-actions button {
+      -webkit-flex: 1 !important;
+      flex: 1 !important;
+      max-width: 200px !important;
+      -webkit-transform: translateZ(0) !important;
+      transform: translateZ(0) !important;
+    }
+  }
+
+  /* iPhone-specific app layout fixes */
+  @media (max-width: 768px) {
+    .app-content {
+      display: -webkit-flex !important;
+      display: flex !important;
+      -webkit-flex-direction: column !important;
+      flex-direction: column !important;
+      height: auto !important;
+      gap: 20px !important;
+      max-width: none !important;
+      -webkit-transform: translateZ(0) !important;
+      transform: translateZ(0) !important;
+    }
+
+    .left-panel {
+      -webkit-order: 1 !important;
+      order: 1 !important;
+      padding: 24px !important;
+      gap: 24px !important;
+      height: auto !important;
+      min-height: auto !important;
+      -webkit-transform: translateZ(0) !important;
+      transform: translateZ(0) !important;
+    }
+
+    .right-panel {
+      -webkit-order: 2 !important;
+      order: 2 !important;
+      padding: 24px !important;
+      max-height: 400px !important;
+      height: auto !important;
+      min-height: auto !important;
+      -webkit-transform: translateZ(0) !important;
+      transform: translateZ(0) !important;
     }
   }
 }
 
-@media (max-width: 480px) {
-
-  /* Enhanced App Interface */
-  .app-header {
-    padding: 0 16px;
-  }
-
-  .header-left {
-    gap: 16px;
-  }
-
-  .header-left h1 {
-    font-size: 1.3rem;
-  }
-
-  .header-right {
-    gap: 8px;
-  }
-
-  .app-main {
-    padding: 16px;
-  }
-
-  .app-content {
-    gap: 16px;
-  }
-
-  .left-panel,
-  .right-panel {
-    padding: 20px;
-    border-radius: var(--radius-md);
-  }
-
-  .prompt-section h3,
-  .history-section h3 {
-    font-size: 1.1rem;
-    margin-bottom: 12px;
-  }
-
-  #promptInput {
-    min-height: 80px;
-    padding: 14px;
-    font-size: 15px;
-  }
-
-  .image-container {
-    min-height: 250px;
-    max-height: none;
-    height: auto;
-    padding: 12px;
-  }
-
-  .image-container.has-image {
-    padding: 12px;
-    min-height: auto;
-  }
-
-  .image-container img {
-    max-width: 100%;
-    max-height: 80vh;
-    width: auto;
-    height: auto;
-    object-fit: contain;
-    border-radius: var(--radius-sm);
-  }
-
-  .placeholder-icon {
-    font-size: 2.5rem;
-    margin-bottom: 12px;
-  }
-
-  .image-container .image-placeholder {
-    padding: 30px 16px;
-  }
-
-  .image-container .image-placeholder p {
-    font-size: 0.9rem;
-    margin: 12px;
-  }
-
-  .image-actions {
-    gap: 10px;
-  }
-
-  .right-panel {
-    max-height: 350px;
-  }
-
-  .history-container {
-    max-height: 250px;
-  }
-
-  .history-item {
-    padding: 10px;
-    margin-bottom: 10px;
-  }
-
-  .history-item img,
-  .image-placeholder-small {
-    height: 80px;
-  }
-
-  .history-item-prompt {
-    font-size: 12px;
-    margin-bottom: 4px;
-    -webkit-line-clamp: 2;
-  }
-
-  .history-item-date {
-    font-size: 10px;
-  }
-
-  #loadMoreBtn {
-    padding: 10px 20px;
-    font-size: 14px;
-    margin-top: 12px;
-  }
-
-  /* Enhanced Auth Pages */
-  .auth-container {
-    padding: 16px;
-  }
-
-  .auth-card {
-    padding: 24px 20px;
-  }
-
-  .auth-header {
-    margin-bottom: 24px;
-  }
-
-  .auth-header h1 {
-    font-size: 1.6rem;
-    margin-bottom: 12px;
-  }
-
-  .auth-header h2 {
-    font-size: 1.1rem;
-  }
-
-  .auth-header p {
-    font-size: 0.9rem;
-  }
-
-  .form-group {
-    margin-bottom: 16px;
-  }
-
-  .form-group label {
-    font-size: 13px;
-    margin-bottom: 6px;
-  }
-
-  .form-group input {
-    padding: 14px;
-    font-size: 15px;
-  }
-
-  .auth-footer p {
-    font-size: 0.9rem;
-    margin-bottom: 10px;
-  }
-
-  .message {
-    padding: 12px;
-    font-size: 0.9rem;
-    margin-top: 16px;
-  }
-
-  /* Enhanced Loading States */
-  .loading-content {
-    padding: 32px 24px;
-    margin: 16px;
-  }
-
-  .spinner {
-    width: 40px;
-    height: 40px;
-    margin-bottom: 16px;
-  }
-
-  .loading-content p {
-    font-size: 0.95rem;
-  }
-
-  .mini-spinner {
-    width: 28px;
-    height: 28px;
-    margin-bottom: 12px;
-  }
-
-  .history-loading,
-  .history-error {
-    padding: 40px 16px;
-  }
-
-  .retry-btn {
-    padding: 8px 16px;
-    font-size: 13px;
-    margin-top: 12px;
-  }
-}
-
-@media (max-width: 360px) {
-
-  /* Ultra Small Screens */
-  .hero-content h1 {
-    font-size: 1.5rem;
-  }
-
-  .image-placeholder {
-    width: 200px;
-    height: 200px;
-  }
-
-  .ai-icon {
-    font-size: 2.5rem;
-  }
-
-  .features h2,
-  .about-text h2 {
-    font-size: 1.4rem;
-  }
-
-  .feature-card {
-    padding: 20px 16px;
-  }
-
-  .feature-icon {
-    font-size: 2rem;
-  }
-
-  .auth-header h1 {
-    font-size: 1.4rem;
-  }
-
-  .auth-header h2 {
-    font-size: 1.1rem;
-  }
-
-  .header-left h1 {
-    font-size: 1.2rem;
-  }
-
-  .about-stats {
-    gap: 8px;
-  }
-
-  .footer-links {
-    gap: 20px;
-  }
-
-  .image-placeholder-small,
-  .history-item img {
-    height: 80px;
-  }
-
-  .history-item-prompt {
-    font-size: 11px;
-    -webkit-line-clamp: 1;
-  }
-
-  .history-item-date {
-    font-size: 9px;
-  }
-}
-
-/* Landscape Orientation Adjustments for Mobile */
-@media (max-height: 500px) and (orientation: landscape) {
-  .hero {
-    min-height: auto;
-    padding: 40px 16px;
-    flex-direction: row;
-    text-align: left;
-  }
-
-  .hero-content {
-    order: 1;
-  }
-
-  .hero-image {
-    order: 2;
-  }
-
-  .hero-buttons {
-    flex-direction: row;
-    justify-content: flex-start;
-  }
-
-  .auth-container {
-    padding: 16px;
-  }
-
-  .auth-card {
-    padding: 20px;
-    max-height: 90vh;
-    overflow-y: auto;
-  }
-
-  .image-container {
-    min-height: 200px;
-    max-height: 250px;
-  }
-
-  .app-content {
-    flex-direction: row;
-    height: calc(100vh - 80px);
-  }
-
-  .left-panel {
-    flex: 2;
-    order: 1;
-  }
-
-  .right-panel {
-    flex: 1;
-    order: 2;
-    max-height: none;
-  }
-}
-
-/* Touch-Friendly Improvements */
-@media (hover: none) and (pointer: coarse) {
-
-  /* Touch devices */
-  .btn-primary,
-  .btn-secondary,
-  .theme-toggle {
-    min-height: 48px;
-    min-width: 48px;
-  }
-
-  .history-item {
-    padding: 16px;
-    margin-bottom: 16px;
-  }
-
-  .nav-links a {
-    padding: 16px 0;
-  }
-
-  .feature-card,
-  .stat {
-    padding: 32px 24px;
-  }
-
-  /* Larger touch targets */
-  .mobile-menu-toggle {
-    padding: 12px;
-    min-width: 48px;
-    min-height: 48px;
-  }
-
-  .retry-btn {
-    min-height: 44px;
-    padding: 12px 20px;
-  }
-}
-
-/* High DPI Displays */
-@media (-webkit-min-device-pixel-ratio: 2),
-(min-resolution: 192dpi) {
-  .image-placeholder::before {
-    animation-duration: 6s;
-  }
-
-  .spinner,
-  .mini-spinner,
-  .loading-spinner-small {
-    border-width: 2px;
-  }
-}
-
-/* Reduced Motion Preferences */
-@media (prefers-reduced-motion: reduce) {
-
-  *,
-  *::before,
-  *::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
-  }
-
-  .image-placeholder::before,
-  .shimmer {
-    animation: none;
-  }
-
-  .spinner,
-  .mini-spinner,
-  .loading-spinner-small {
-    animation: none;
-    border: 2px solid var(--border-color);
-    border-top: 2px solid var(--primary-color);
-  }
-
-  .btn-primary:hover,
-  .btn-secondary:hover,
-  .theme-toggle:hover {
-    transform: none;
-  }
-}
-
-/* Print Styles */
-@media print {
-
-  .navbar,
-  .mobile-menu-toggle,
-  .theme-toggle,
-  .btn-primary,
-  .btn-secondary,
-  .loading-overlay,
-  .header-right {
-    display: none !important;
-  }
-
-  .hero {
-    margin-top: 0;
-  }
-
-  * {
-    background: white !important;
-    color: black !important;
-    box-shadow: none !important;
-  }
-
-  .hero-content h1,
-  .nav-logo h2,
-  .footer-logo h3,
-  .header-left h1 {
-    color: black !important;
-    -webkit-text-fill-color: black !important;
-  }
-}
-
-/* iOS Safari Specific Fixes */
+/* Additional iOS Safari viewport fixes */
 @supports (-webkit-touch-callout: none) {
 
   .form-group input,
@@ -2493,10 +2197,13 @@ img {
     font-size: 16px;
     /* Prevents zoom on focus */
     border-radius: var(--radius-md);
+    -webkit-appearance: none;
+    appearance: none;
   }
 
   .app-content {
     height: calc(100vh - 136px - env(safe-area-inset-bottom));
+    min-height: calc(100vh - 136px - env(safe-area-inset-bottom));
   }
 
   .auth-container {
@@ -2510,5 +2217,17 @@ img {
 
   .hero {
     margin-top: calc(72px + env(safe-area-inset-top));
+  }
+
+  /* Force hardware acceleration on iOS */
+  .image-container,
+  .image-container img,
+  .generated-image-section {
+    -webkit-transform: translateZ(0);
+    transform: translateZ(0);
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+    -webkit-perspective: 1000px;
+    perspective: 1000px;
   }
 }
