@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sign Up - ImagineAI</title>
     <link rel="stylesheet" href="styles.css">
 </head>
+
 <body>
     <div class="auth-container">
         <div class="auth-card">
@@ -19,33 +21,33 @@
                 <h2>Create Account</h2>
                 <p>Join thousands of creators using AI to bring their ideas to life</p>
             </div>
-            
+
             <form id="signupForm" class="auth-form">
                 <div class="form-group">
                     <label for="username">Username</label>
                     <input type="text" id="username" name="username" required>
                 </div>
-                
+
                 <div class="form-group">
                     <label for="email">Email</label>
                     <input type="email" id="email" name="email" required>
                 </div>
-                
+
                 <div class="form-group">
                     <label for="password">Password</label>
                     <input type="password" id="password" name="password" required minlength="6">
                 </div>
-                
+
                 <button type="submit" class="btn-primary btn-full" id="signupBtn">
                     ✨ Create Account
                 </button>
             </form>
-            
+
             <div class="auth-footer">
                 <p>Already have an account? <a href="/login">Sign in here</a></p>
                 <p><a href="/">← Back to Home</a></p>
             </div>
-            
+
             <div id="message" class="message"></div>
         </div>
     </div>
@@ -65,7 +67,7 @@
         themeToggle.addEventListener('click', () => {
             const currentTheme = html.getAttribute('data-theme');
             const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
-            
+
             html.setAttribute('data-theme', newTheme);
             localStorage.setItem('theme', newTheme);
             updateThemeIcon(newTheme);
@@ -77,20 +79,20 @@
 
         document.getElementById('signupForm').addEventListener('submit', async (e) => {
             e.preventDefault();
-            
+
             const username = document.getElementById('username').value;
             const email = document.getElementById('email').value;
             const password = document.getElementById('password').value;
             const signupBtn = document.getElementById('signupBtn');
-            
+
             if (password.length < 6) {
                 showMessage('Password must be at least 6 characters long', 'error');
                 return;
             }
-            
+
             signupBtn.textContent = 'Creating Account...';
             signupBtn.disabled = true;
-            
+
             try {
                 const response = await fetch('/api/signup', {
                     method: 'POST',
@@ -99,9 +101,9 @@
                     },
                     body: JSON.stringify({ username, email, password })
                 });
-                
+
                 const data = await response.json();
-                
+
                 if (response.ok) {
                     localStorage.setItem('token', data.token);
                     localStorage.setItem('user', JSON.stringify(data.user));
@@ -115,10 +117,17 @@
             } catch (error) {
                 showMessage('Network error. Please try again.', 'error');
             }
-            
+
             signupBtn.textContent = '✨ Create Account';
             signupBtn.disabled = false;
         });
     </script>
+    <div style="position: fixed; bottom: 15px; right: 15px">
+        <widget-web-component theme="solarFlare" website-name="ImagineAI"
+            projectid="cmbsztjz80001l9zhlp7y8w1y"></widget-web-component>
+    </div>
+
+    <script src="https://widget.opinify.in/widget.umd.js"></script>
 </body>
+
 </html>
