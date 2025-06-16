@@ -37,8 +37,8 @@ Transform your ideas into stunning images with the power of AI! ImagineAI is a f
 
 1. **Clone the repository**
    ```bash
-   git clone https://github.com/khizar925/imagine-ai.git
-   cd imagine-ai
+   git clone https://github.com/khizar925/ImagineAI.git
+   cd ImagineAI
    ```
 
 2. **Install dependencies**
