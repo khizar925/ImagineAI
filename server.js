@@ -7,9 +7,7 @@ const fs = require("fs");
 const { GoogleGenAI, Modality } = require("@google/genai");
 
 const app = express();
-const PORT = process.env.PORT || 3000;
-const JWT_SECRET = "your-secret-key-change-in-production";
-const API_KEY = "AIzaSyBdAM1w0XoKfNspA8XM1CmBEL7u7goa6pM";
+const PORT = process.env.PORT
 
 // Initialize Google GenAI (correct package)
 const ai = new GoogleGenAI({ apiKey: API_KEY });
